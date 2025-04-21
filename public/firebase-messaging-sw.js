@@ -1,13 +1,15 @@
 importScripts("https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging-compat.js");
 
-firebase.initializeApp({
-    apiKey: "AIzaSyANiBSBiMVc7t-VTgicpR5tBCPsCsFfWWo",
-    authDomain: "push-demo-cbfd9.firebaseapp.com",
-    projectId: "push-demo-cbfd9",
-    messagingSenderId: "266500566286",
-    appId: "1:266500566286:web:2be7cc58d449cc8af17b5f"
-});
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+};
+
+const app = initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
