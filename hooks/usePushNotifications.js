@@ -28,7 +28,10 @@ export default function usePushNotifications() {
   const setupPush = async () => {
     try {
 
-      if (!isPushSupported()) {
+      if (!(typeof window !== "undefined" &&
+        "serviceWorker" in navigator &&
+        "PushManager" in window &&
+        "Notification" in window)) {
         addError("Push notifications not supported in this browser.");
         return;
       }
