@@ -1,0 +1,20 @@
+importScripts("https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging-compat.js");
+
+firebase.initializeApp({
+    apiKey: "AIzaSyANiBSBiMVc7t-VTgicpR5tBCPsCsFfWWo",
+    authDomain: "push-demo-cbfd9.firebaseapp.com",
+    projectId: "push-demo-cbfd9",
+    messagingSenderId: "266500566286",
+    appId: "1:266500566286:web:2be7cc58d449cc8af17b5f"
+});
+
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage(payload => {
+  const { title, body } = payload.notification;
+  self.registration.showNotification(title, {
+    body,
+    icon: '/vercel.svg',
+  });
+});
