@@ -74,7 +74,6 @@ export default function usePushNotifications() {
       addError("Push notifications not supported in this browser.");
       return;
     }
-    addError("setupPush called");
     setupPush();
   }, []);
 
