@@ -16,5 +16,8 @@ messaging.onBackgroundMessage(payload => {
   self.registration.showNotification(title, {
     body,
     icon: '/vercel.svg',
+    data: {
+      url: '/notifications',
+    }
   });
 });

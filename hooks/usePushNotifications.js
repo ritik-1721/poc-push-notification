@@ -27,6 +27,13 @@ export default function usePushNotifications() {
 
   const setupPush = async () => {
     try {
+
+      if (!isPushSupported()) {
+        addError("Push notifications not supported in this browser.");
+        return;
+      }
+
+
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
         addError("Notification permission denied.");
@@ -69,11 +76,6 @@ export default function usePushNotifications() {
   };
 
   useEffect(() => {
-    if (!isPushSupported()) {
-      addError("not setupPush called");
-      addError("Push notifications not supported in this browser.");
-      return;
-    }
     setupPush();
   }, []);
 
