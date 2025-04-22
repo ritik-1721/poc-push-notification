@@ -14,7 +14,7 @@ export default function usePushNotifications() {
 
   const addError = (message) => {
     setErrors((prev) => [...prev, message]);
-    console.error(message); // Still logs to console for visibility
+    console.error(message);
   };
 
   const setupPush = async () => {
@@ -80,7 +80,21 @@ export default function usePushNotifications() {
   };
 
   useEffect(() => {
-    setupPush();
+    const runPushSetup = async () => {
+      let attempts = 0;
+      let token = null;
+
+      while (attempts < 3 && !token) {
+        token = await setupPush();
+        attempts++;
+
+        if (!token && attempts < 3) {
+          await new Promise((r) => setTimeout(r, 1000));
+        }
+      }
+    };
+
+    runPushSetup();
   }, []);
 
   return { setupPush, fcmToken, errors };

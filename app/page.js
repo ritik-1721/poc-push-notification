@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const { setupPush, fcmToken, errors } = usePushNotifications();
-  
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
@@ -22,17 +22,25 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const title = e.target.title.value;
-    const body = e.target.body.value;
+    setSubmitting(true);
+    try {
+      const token = e.target.token.value;
+      const title = e.target.title.value;
+      const body = e.target.body.value;
 
-    const res = await fetch("/api/send-push", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, body }),
-    });
+      const res = await fetch("/api/send-push", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, title, body }),
+      });
 
-    const data = await res.json();
-    console.log("Push sent:", data);
+      const data = await res.json();
+      console.log("Push sent:", data);
+    } catch (err) {
+      console.error("Failed to send push:", err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -50,7 +58,7 @@ export default function Home() {
         <div className="w-full bg-[#121212] border border-gray-700 p-4 rounded-md">
           <h2 className="text-lg font-semibold mb-2">📲 Dummy FCM Token</h2>
           <code className="break-words text-sm text-green-400">{fcmToken}</code>
-          <code className="break-words text-sm text-red-400">{errors.join(", ")}</code>
+          <code className="break-words text-sm text-red-400">{!fcmToken && errors.join(", ")}</code>
         </div>
 
         <div className="w-full bg-[#1c1c1c] border border-gray-700 p-4 rounded-md">
@@ -66,6 +74,13 @@ export default function Home() {
           className="flex flex-col gap-3 bg-[#1c1c1c] p-4 rounded-md border border-gray-700 w-full"
         >
           <h2 className="text-lg font-semibold mb-2">📤 Send Push Notification</h2>
+          <input
+            type="text"
+            name="token"
+            placeholder="Token (leave empty for all)"
+            required
+            className="p-2 rounded bg-black text-white border border-gray-600"
+          />
           <input
             type="text"
             name="title"
