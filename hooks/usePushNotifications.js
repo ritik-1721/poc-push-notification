@@ -5,18 +5,10 @@ import {
   getToken,
   onMessage,
 } from "@/lib/firebase-config";
-
-// Utility to check for push support
-const isPushSupported = () => {
-  return (
-    typeof window !== "undefined" &&
-    "serviceWorker" in navigator &&
-    "PushManager" in window &&
-    "Notification" in window
-  );
-};
+import { useToast } from "@/components/ToastProvider";
 
 export default function usePushNotifications() {
+  const { showToast } = useToast();
   const [fcmToken, setFcmToken] = useState(null);
   const [errors, setErrors] = useState([]);
 
@@ -67,9 +59,21 @@ export default function usePushNotifications() {
       onMessage(messaging, (payload) => {
         const { title, body } = payload.notification || {};
         if (title && body) {
-          alert(`${title}: ${body}`);
+          showToast(title , body, "success");
         }
+          
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream /* iOS detection */ || /Macintosh|MacIntel|MacPPC|Mac68K/.test(userAgent) /* macOS */) {
+          self.registration.showNotification(title, {
+            body,
+            icon: '/vercel.svg',
+            data: {
+              url: '/notifications',
+            }
+          });
+        }
+
       });
+
     } catch (err) {
       addError(`Unexpected error setting up push notifications: ${err.message || err}`);
     }
