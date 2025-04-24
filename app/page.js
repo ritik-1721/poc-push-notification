@@ -4,7 +4,7 @@ import usePushNotifications from "@/hooks/usePushNotifications";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { setupPush, fcmToken, errors } = usePushNotifications();
+  const { setupPush, fcmToken, errors, notificationPermission } = usePushNotifications();
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -48,12 +48,14 @@ export default function Home() {
       <main className="flex flex-col gap-6 items-center text-center w-full max-w-xl">
         <h1 className="text-3xl font-bold tracking-tight">🔔 Push Notification POC</h1>
 
-        <button
-          onClick={() => setupPush()}
-          className="bg-pink-600 hover:bg-pink-700 transition text-white px-6 py-3 rounded-full shadow-md"
-        >
-          🚀 Setup Push
-        </button>
+        {notificationPermission && (
+          <button
+            onClick={() => setupPush()}
+            className="bg-pink-600 hover:bg-pink-700 transition text-white px-6 py-3 rounded-full shadow-md"
+          >
+            🚀 Enable Push Notifications
+          </button>
+        )}
 
         <div className="w-full bg-[#121212] border border-gray-700 p-4 rounded-md">
           <h2 className="text-lg font-semibold mb-2">📲 Dummy FCM Token</h2>
@@ -97,13 +99,12 @@ export default function Home() {
           <button
             disabled={submitting}
             type="submit"
-              className={`px-4 py-2 rounded-full shadow transition ${
-              submitting
+            className={`px-4 py-2 rounded-full shadow transition ${submitting
                 ? "bg-gray-600 cursor-not-allowed"
                 : "bg-green-600 hover:bg-green-700"
-            } text-white`}
+              } text-white`}
           >
-             {submitting ? "📤 Sending..." : "🎯 Send Push"}
+            {submitting ? "📤 Sending..." : "🎯 Send Push"}
           </button>
         </form>
       </main>

@@ -11,7 +11,7 @@ export default function usePushNotifications() {
   const { showToast } = useToast();
   const [fcmToken, setFcmToken] = useState(null);
   const [errors, setErrors] = useState([]);
-
+  const [notificationPermission, setNotificationPermission] = useState(false);
   const addError = (message) => {
     setErrors((prev) => [...prev, message]);
     console.error(message);
@@ -31,7 +31,7 @@ export default function usePushNotifications() {
         addError("Notification permission denied.");
         return;
       }
-
+      setNotificationPermission(true)
       const messaging = getMessagingInstance();
       if (!messaging) {
         addError("Firebase Messaging is not available.");
@@ -87,5 +87,5 @@ export default function usePushNotifications() {
     runPushSetup();
   }, []);
 
-  return { setupPush, fcmToken, errors };
+  return { setupPush, fcmToken, errors, notificationPermission };
 }
