@@ -24,7 +24,7 @@ export async function POST(request) {
     
       await getMessaging().send({
         token,
-        data: { title, body },
+        data: { title, body, url: "/notifications" },
       }).then(res => results.push({ token, success: true, messageId: res }))
         .catch(err => results.push({ token, success: false, error: err.message }))
     
@@ -35,7 +35,7 @@ export async function POST(request) {
       const sendAll = tokens.map((token) =>
         getMessaging().send({
           token,
-          data: { title, body },
+          data: { title, body, url: "/notifications" },
         }).then(res => ({ token, success: true, messageId: res }))
           .catch(err => ({ token, success: false, error: err.message }))
       );

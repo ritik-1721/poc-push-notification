@@ -57,9 +57,24 @@ export default function usePushNotifications() {
       }
 
       onMessage(messaging, (payload) => {
-        const { title, body } = payload.data || {};
+        const { title, body, url } = payload.data || {};
         if (title && body) {
           showToast(title , body, "success");
+        }
+
+        if (Notification.permission === "granted") {
+          const notification = new Notification(title, {
+            body,
+            icon: "/firebase-logo.png", // Replace with your icon
+            data: {
+              url: url,
+            },
+          });
+        
+          notification.onclick = (event) => {
+            event.preventDefault(); // Prevent the default action
+            window.open(notification.data.url, '_blank');
+          };
         }
 
       });

@@ -12,12 +12,12 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(payload => {
-  const { title, body } = payload.data;
+  const { title, body, url } = payload.data;
   self.registration.showNotification(title, {
     body,
     icon: '/vercel.svg',
     data: {
-      url: '/notifications',
+      url: url,
     }
   });
 });
