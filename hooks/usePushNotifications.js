@@ -63,13 +63,13 @@ export default function usePushNotifications() {
         }
           
         // if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream /* iOS detection */ || /Macintosh|MacIntel|MacPPC|Mac68K/.test(userAgent) /* macOS */) {
-          self.registration.showNotification(title, {
-            body,
-            icon: '/vercel.svg',
-            data: {
-              url: '/notifications',
-            }
-          });
+          // self.registration.showNotification(title, {
+          //   body,
+          //   icon: '/vercel.svg',
+          //   data: {
+          //     url: '/notifications',
+          //   }
+          // });
         // }
 
       });
