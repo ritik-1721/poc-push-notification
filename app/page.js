@@ -78,7 +78,6 @@ export default function Home() {
             type="text"
             name="token"
             placeholder="Token (leave empty for all)"
-            required
             className="p-2 rounded bg-black text-white border border-gray-600"
           />
           <input
@@ -96,10 +95,15 @@ export default function Home() {
             className="p-2 rounded bg-black text-white border border-gray-600"
           />
           <button
+            disabled={submitting}
             type="submit"
-            className="bg-green-600 hover:bg-green-700 transition text-white px-4 py-2 rounded-full shadow"
+              className={`px-4 py-2 rounded-full shadow transition ${
+              submitting
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
+            } text-white`}
           >
-            🎯 Send Push
+             {submitting ? "📤 Sending..." : "🎯 Send Push"}
           </button>
         </form>
       </main>

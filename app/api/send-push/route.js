@@ -18,26 +18,29 @@ export async function POST(request) {
       return new Response("Missing title or body", { status: 400 });
     }
 
-    const snapshot = await db.collection("fcmTokens").get();
-    const tokens = snapshot.docs.map((doc) => doc.id);
-
-    const sendAll = tokens.map((token) =>
-      getMessaging().send({
-        token,
-        notification: { title, body },
-      }).then(res => ({ token, success: true, messageId: res }))
-        .catch(err => ({ token, success: false, error: err.message }))
-    );
     let results = [];
 
     if(token){
-      getMessaging().send({
+    
+      await getMessaging().send({
         token,
         notification: { title, body },
       }).then(res => results.push({ token, success: true, messageId: res }))
         .catch(err => results.push({ token, success: false, error: err.message }))
+    
     }else{
+
+      const snapshot = await db.collection("fcmTokens").get();
+      const tokens = snapshot.docs.map((doc) => doc.id);
+      const sendAll = tokens.map((token) =>
+        getMessaging().send({
+          token,
+          notification: { title, body },
+        }).then(res => ({ token, success: true, messageId: res }))
+          .catch(err => ({ token, success: false, error: err.message }))
+      );
       results = await Promise.all(sendAll);
+      
     }
 
     return Response.json({ success: true, results });
