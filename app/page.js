@@ -48,7 +48,7 @@ export default function Home() {
       <main className="flex flex-col gap-6 items-center text-center w-full max-w-xl">
         <h1 className="text-3xl font-bold tracking-tight">🔔 Push Notification POC</h1>
 
-        {notificationPermission && (
+        {!notificationPermission && (
           <button
             onClick={() => setupPush()}
             className="bg-pink-600 hover:bg-pink-700 transition text-white px-6 py-3 rounded-full shadow-md"
