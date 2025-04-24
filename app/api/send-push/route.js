@@ -24,7 +24,7 @@ export async function POST(request) {
     
       await getMessaging().send({
         token,
-        notification: { title, body },
+        data: { title, body },
       }).then(res => results.push({ token, success: true, messageId: res }))
         .catch(err => results.push({ token, success: false, error: err.message }))
     
@@ -35,12 +35,12 @@ export async function POST(request) {
       const sendAll = tokens.map((token) =>
         getMessaging().send({
           token,
-          notification: { title, body },
+          data: { title, body },
         }).then(res => ({ token, success: true, messageId: res }))
           .catch(err => ({ token, success: false, error: err.message }))
       );
       results = await Promise.all(sendAll);
-      
+
     }
 
     return Response.json({ success: true, results });

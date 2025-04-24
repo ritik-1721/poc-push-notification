@@ -57,7 +57,7 @@ export default function usePushNotifications() {
       }
 
       onMessage(messaging, (payload) => {
-        const { title, body } = payload.notification || {};
+        const { title, body } = payload.data || {};
         if (title && body) {
           showToast(title , body, "success");
         }
